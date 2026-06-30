@@ -109,11 +109,12 @@
 
 import React from "react";
 import { BoxIconLine, GroupIcon, TaskIcon } from "@/icons";
-import { DashboardRole } from "@/app/(admin)/page";
+// import { DashboardRole } from "@/app/(admin)/page";
 import { CheckCircleIcon, UserCircleIcon, X } from "lucide-react";
 
 type SummaryData = Record<string, number>;
 
+type DashboardRole = "admin" | "recruiter" | "super_admin";
 interface MetricItem {
   title: string;
   key: string;
@@ -122,7 +123,7 @@ interface MetricItem {
 
 interface EcommerceMetricsProps {
   data: { summary: SummaryData };
-  role: DashboardRole;
+  role ?: DashboardRole;
 }
 
 const metricsConfig: Record<DashboardRole, MetricItem[]> = {
@@ -251,7 +252,7 @@ const metricsConfig: Record<DashboardRole, MetricItem[]> = {
   ],
 };
 
-export const EcommerceMetrics = ({ data, role }: EcommerceMetricsProps) => {
+export const EcommerceMetrics = ({ data, role= "admin", }: EcommerceMetricsProps) => {
   const { summary } = data ?? {};
 
   if (!summary) return null;

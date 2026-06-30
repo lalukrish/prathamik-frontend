@@ -11,6 +11,7 @@ export interface DashboardStats {
   bestScore: number;
   overallAccuracy: number;
   totalNegativeMarks: number;
+    streakDays: number;
   subjectPerformance: SubjectPerformance[];
 }
 

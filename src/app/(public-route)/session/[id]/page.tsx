@@ -1,262 +1,5 @@
 
 
-// "use client";
-
-// import { useEffect, useState, useCallback } from "react";
-// import { useParams, useRouter } from "next/navigation";
-
-
-// import ExamTimer from "@/components/exam-page/ExamTimer";
-// import QuestionView from "@/components/exam-page/QuestionVIew";
-// import QuestionPalette from "@/components/exam-page/QuestionPalette";
-// import ExamFooter from "@/components/exam-page/ExamFooter";
-
-// import {
-//   getSession,
-//   submitAnswer,
-//   submitTest,
-//   pauseTest,
-//   resumeTest,
-// } from "@/shared/test";
-
-// import type { ExamSession } from "./types";
-
-// export default function ExamPage() {
-//   const params = useParams();
-//   const router = useRouter();
-//   const sessionId = params.id as string;
-
-//   const [session, setSession] = useState<ExamSession | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
-
-//   const [currentIndex, setCurrentIndex] = useState(0);
-//   const [remainingSeconds, setRemainingSeconds] = useState(0);
-
-//   // questionId → optionId
-//   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
-//   // set of questionIds marked for review
-//   const [reviewSet, setReviewSet] = useState<Set<string>>(new Set());
-
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [isPaused, setIsPaused] = useState(false);
-
-//   // ── Load session ──────────────────────────────────────────────
-//   useEffect(() => {
-//     const load = async () => {
-//       try {
-//         const res = await getSession(sessionId);
-//         const data: ExamSession = res.data;
-//         setSession(data);
-//         setRemainingSeconds(data.remainingSeconds);
-
-//         // Pre-populate answers from server if session was resumed
-//         if (data.answers) {
-//           setSelectedOptions(data.answers);
-//         }
-//       } catch {
-//         setError("Failed to load the exam. Please refresh.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     load();
-//   }, [sessionId]);
-
-//   // ── Pause / Resume ────────────────────────────────────────────
-//   const handlePause = async () => {
-//     if (!session || isPaused) return;
-//     try {
-//       await pauseTest(session.id);
-//       setIsPaused(true);
-//     } catch {}
-//   };
-
-//   const handleResume = async () => {
-//     if (!session || !isPaused) return;
-//     try {
-//       await resumeTest(session.id);
-//       setIsPaused(false);
-//     } catch {}
-//   };
-
-//   // ── Countdown timer ───────────────────────────────────────────
-//   useEffect(() => {
-//     if (!session || remainingSeconds <= 0 || isPaused) return;
-
-//     const timer = setInterval(() => {
-//       setRemainingSeconds((prev) => {
-//         if (prev <= 1) {
-//           clearInterval(timer);
-//           handleAutoSubmit();
-//           return 0;
-//         }
-//         return prev - 1;
-//       });
-//     }, 1000);
-
-//     return () => clearInterval(timer);
-//   }, [session]); // only restart when session loads
-
-//   // ── Helpers ───────────────────────────────────────────────────
-//   const handleAutoSubmit = useCallback(async () => {
-//     if (!session) return;
-//     await submitTest(session.id);
-//     router.push(`/exam/result/${session.id}`);
-//   }, [session, router]);
-
-//   const handleSelectOption = async (optionId: string) => {
-//     if (!session) return;
-//     const question = session.mockTest.questions[currentIndex];
-//     if (!question) return;
-
-//     setSelectedOptions((prev) => ({ ...prev, [question.id]: optionId }));
-
-//     try {
-//       await submitAnswer(session.id, question.id, optionId);
-//     } catch {
-//       // Optimistic update already applied; handle silently or show toast
-//     }
-//   };
-
-//   const handleMarkReview = () => {
-//     const question = session?.mockTest.questions[currentIndex];
-//     if (!question) return;
-
-//     setReviewSet((prev) => {
-//       const next = new Set(prev);
-//       if (next.has(question.id)) next.delete(question.id);
-//       else next.add(question.id);
-//       return next;
-//     });
-//   };
-
-//   const handleSubmitTest = async () => {
-//     if (!session || isSubmitting) return;
-//     const confirmed = window.confirm("Are you sure you want to submit the test?");
-//     if (!confirmed) return;
-
-//     setIsSubmitting(true);
-//     try {
-//       await submitTest(session.id);
-//       router.push(`/exam/result/${session.id}`);
-//     } catch {
-//       setIsSubmitting(false);
-//     }
-//   };
-
-//   // ── Render states ─────────────────────────────────────────────
-//   if (loading) {
-//     return (
-//       <div className="flex h-screen items-center justify-center bg-slate-50">
-//         <div className="flex flex-col items-center gap-3">
-//           <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-indigo-500" />
-//           <p className="text-sm text-slate-500">Loading your exam…</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (error || !session) {
-//     return (
-//       <div className="flex h-screen items-center justify-center bg-slate-50">
-//         <p className="text-sm text-red-500">{error ?? "Session not found."}</p>
-//       </div>
-//     );
-//   }
-
-//   const questions = session.mockTest.questions;
-//   const question = questions[currentIndex];
-//   const sections = session.mockTest.sections;
-
-//   if (!question) {
-//     return (
-//       <div className="flex h-screen items-center justify-center">
-//         <p className="text-slate-500">No questions found for this test.</p>
-//       </div>
-//     );
-//   }
-
-//   const answeredIds = new Set(Object.keys(selectedOptions));
-//   const isMarkedForReview = reviewSet.has(question.id);
-
-//   return (
-//     <div className="flex h-screen flex-col overflow-hidden bg-slate-50 font-sans">
-//       {/* ── Top Bar ─────────────────────────────────────────── */}
-//       <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6 py-3 shadow-sm">
-//         <div className="flex items-center gap-3">
-//           <div className="h-6 w-1 rounded-full bg-indigo-500" />
-//           <h1 className="text-base font-semibold text-slate-800">
-//             {session.mockTest.title}
-//           </h1>
-//         </div>
-//         <div className="flex items-center gap-3">
-//           <ExamTimer remainingSeconds={remainingSeconds} />
-//           <button
-//             onClick={isPaused ? handleResume : handlePause}
-//             className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
-//               isPaused
-//                 ? "bg-indigo-500 text-white hover:bg-indigo-600"
-//                 : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-//             }`}
-//           >
-//             {isPaused ? "▶ Resume" : "⏸ Pause"}
-//           </button>
-//         </div>
-//       </header>
-
-//       {/* ── Main layout ─────────────────────────────────────── */}
-//       <div className="flex min-h-0 flex-1">
-//         {/* Question area */}
-//         <main className="relative flex min-w-0 flex-1 flex-col overflow-y-auto">
-//           {isPaused && (
-//             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-white/90 backdrop-blur-sm">
-//               <span className="text-4xl">⏸</span>
-//               <p className="text-base font-semibold text-slate-700">Exam Paused</p>
-//               <p className="text-sm text-slate-400">Click Resume to continue</p>
-//             </div>
-//           )}
-//           <div className="flex-1 px-8 py-7">
-//             <QuestionView
-//               question={question}
-//               questionNumber={currentIndex + 1}
-//               totalQuestions={questions.length}
-//               selectedOptionId={selectedOptions[question.id]}
-//               onSelectOption={handleSelectOption}
-//             />
-//           </div>
-
-//           {/* Footer pinned at bottom of main */}
-//           <ExamFooter
-//             currentIndex={currentIndex}
-//             totalQuestions={questions.length}
-//             isMarkedForReview={isMarkedForReview}
-//             onPrev={() => setCurrentIndex((i) => Math.max(0, i - 1))}
-//             onNext={() => setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))}
-//             onMarkReview={handleMarkReview}
-//             onSubmit={handleSubmitTest}
-//             isSubmitting={isSubmitting}
-//           />
-//         </main>
-
-//         {/* Palette sidebar */}
-//         <aside className="w-64 shrink-0 overflow-y-auto border-l border-slate-200 bg-white px-4 py-5">
-//           <QuestionPalette
-//             questions={questions}
-//             currentIndex={currentIndex}
-//             answeredIds={answeredIds}
-//             reviewIds={reviewSet}
-//             onNavigate={setCurrentIndex}
-//             sections={sections}
-//           />
-//         </aside>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -270,7 +13,7 @@ import {
   resumeTest,
 } from "@/shared/test";
 
-import type { ExamSession, ExamQuestion } from "./types";
+import type { ExamSession, Question  } from "./types";
 
 // ─── Boxed digit timer (echoes the landing page's LiveTimer motif) ───────────
 
@@ -356,7 +99,7 @@ function QuestionView({
   selectedOptionId,
   onSelectOption,
 }: {
-  question: ExamQuestion;
+  question: Question ;
   selectedOptionId: string | undefined;
   onSelectOption: (optionId: string) => void;
 }) {
@@ -507,7 +250,7 @@ function QuestionPalette({
   reviewIds,
   onNavigate,
 }: {
-  questions: ExamQuestion[];
+  questions: Question [];
   currentIndex: number;
   answeredIds: Set<string>;
   reviewIds: Set<string>;
@@ -627,7 +370,7 @@ export default function ExamPage() {
   const handleAutoSubmit = useCallback(async () => {
     if (!session) return;
     await submitTest(session.id);
-    router.push(`/exam/result/${session.id}`);
+    router.push(`/exam/results/${session.id}`);
   }, [session, router]);
 
   useEffect(() => {
@@ -706,7 +449,7 @@ export default function ExamPage() {
     setIsSubmitting(true);
     try {
       await submitTest(session.id);
-      router.push(`/exam/result/${session.id}`);
+      router.push(`/exam/results/${session.id}`);
     } catch {
       setIsSubmitting(false);
       setShowSubmitConfirm(false);

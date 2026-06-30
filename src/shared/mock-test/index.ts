@@ -37,16 +37,32 @@ export const getMockTestById = async (id: string) => {
   return response.data;
 };
 
+// export const updateMockTest = async (
+//   id: string,
+//   payload: {
+//     title?: string;
+//     description?: string;
+//     duration?: number;
+//     totalMarks?: number;
+//   }
+// ) => {
+//   const response = await axiosInstance.put(`/mock-tests/${id}`, payload);
+//   return response.data;
+// };
 export const updateMockTest = async (
   id: string,
-  payload: {
-    title?: string;
-    description?: string;
-    duration?: number;
-    totalMarks?: number;
-  }
+  payload: FormData
 ) => {
-  const response = await axiosInstance.put(`/mock-tests/${id}`, payload);
+  const response = await axiosInstance.put(
+    `/mock-tests/${id}`,
+    payload,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
   return response.data;
 };
 

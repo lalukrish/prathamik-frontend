@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { SubjectPerformance } from "./Types";
+import { SubjectPerformance } from "./types";
 
 interface Props {
   data: SubjectPerformance[];
@@ -49,14 +49,14 @@ export default function SubjectPerformanceChart({ data }: Props) {
             fill="#6366f1"
             fillOpacity={0.2}
           />
-          <Tooltip
-            formatter={(value: number) => [`${value}%`, "Score"]}
-            contentStyle={{
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0",
-              fontSize: "12px",
-            }}
-          />
+        <Tooltip
+  formatter={(value) => [`${Number(value ?? 0).toFixed(0)}%`, "Score"]}
+  contentStyle={{
+    borderRadius: "8px",
+    border: "1px solid #e2e8f0",
+    fontSize: "12px",
+  }}
+/>
         </RadarChart>
       </ResponsiveContainer>
     </div>

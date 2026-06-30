@@ -312,7 +312,7 @@ export default function AddQuestionPage() {
           <Label>Negative Marks</Label>
           <Input
             type="number"
-            step="0.25"
+  step={0.25}
             value={negativeMarks}
             onChange={(e) => setNegativeMarks(e.target.value)}
           />

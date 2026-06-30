@@ -19,6 +19,7 @@ export type ResultQuestion = {
   options: ExamOption[];
   correctOptionId: string;
   selectedOptionId: string | null;
+  description:string,
   outcome: QuestionOutcome;
   marksAwarded: number;
 };
@@ -55,12 +56,12 @@ export type ExamResult = {
   accuracy: number; // 0-100, based on attempted questions only
   rank: number | null;
   totalParticipants: number | null;
-
+  scoredMarks ?:number,
   correctCount: number;
   incorrectCount: number;
   skippedCount: number;
   totalQuestions: number;
-
+  percentile?:string,
   subjectBreakdown: SubjectBreakdown[];
   difficultyBreakdown: DifficultyBreakdown[];
   questions: ResultQuestion[];

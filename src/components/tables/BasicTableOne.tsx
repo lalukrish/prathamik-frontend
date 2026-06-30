@@ -31,9 +31,9 @@ interface BasicTableOneProps {
     token: string;
   }) => Promise<any>;
   columns: Column[];
-  handleEdit: (data: any) => Promise<any>;
-  handleCreate: (data: any) => Promise<any>;
-  handleDelete: (id: string) => Promise<any>;
+  handleEdit?: (data: any) => Promise<any>;
+  handleCreate?: (data: any) => Promise<any>;
+  handleDelete?: (id: string) => Promise<any>;
   buttons?: (openCreateModal: () => void) => React.ReactNode;
   emptyRow: any;
   transformRowForEdit?: (row: any) => any;
@@ -150,12 +150,16 @@ const token = user.token;
     try {
       setIsSubmitting(true);
       if (selectedRow.id) {
+              if (!handleEdit) return;
+
         const updatedData = await handleEdit(selectedRow);
         if (updatedData === null) return;
         if (updatedData && transformEditResponse) {
           setRows((prev) => transformEditResponse(prev, updatedData));
         }
       } else {
+              if (!handleCreate) return;
+
         console.log("Creating with data:", selectedRow);
         const createdData = await handleCreate(selectedRow);
         if (createdData === null) return;
@@ -179,6 +183,8 @@ const token = user.token;
       setIsDeleting(true);
 
       console.log("sdcsjkdcnskdj")
+      if (!handleDelete) return;
+
       const deletedItem = await handleDelete(deleteRow.id);
 
       if (deletedItem) {

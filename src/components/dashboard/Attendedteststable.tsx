@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AttendedTest } from "./Types";
+import { AttendedTest } from "./types";
 
 interface Props {
   tests: AttendedTest[];
@@ -64,7 +64,7 @@ export default function AttendedTestsTable({ tests }: Props) {
             {tests.map((test) => (
               <tr
                 key={test.sessionId}
-                onClick={() => router.push(`/exam/result/${test.sessionId}`)}
+                onClick={() => router.push(`/exam/results/${test.sessionId}`)}
                 className="cursor-pointer border-b border-slate-50 transition-colors last:border-0 hover:bg-slate-50"
               >
                 <td className="px-6 py-4">

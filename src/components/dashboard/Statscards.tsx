@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardStats } from "./Types";
+import { DashboardStats } from "./types";
 
 interface Props {
   stats: DashboardStats;

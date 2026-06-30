@@ -22,6 +22,7 @@ export interface Question {
   difficulty: string;
   sortOrder: number;
   options: Option[];
+   imageUrl?: string;
 }
 
 export interface MockTest {
@@ -38,6 +39,7 @@ export interface Section {
 
 export interface ExamSession {
   id: string;
+  studentName?:string,
   remainingSeconds: number;
   status: "active" | "paused" | "submitted";
   mockTest: MockTest;

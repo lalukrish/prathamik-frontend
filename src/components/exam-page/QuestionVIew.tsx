@@ -81,8 +81,28 @@
 
 "use client";
 
-import { Question, Option } from "../types";
+export interface Option {
+  id: string;
+  text: string;
+}
 
+export interface Subject {
+  id: string;
+  name: string;
+}
+
+export interface Question {
+  id: string;
+  question: string;
+  subject?: Subject;
+  subjectId?: string;
+  type: string;
+  marks: number;
+  negativeMarks: number;
+  difficulty: string;
+  sortOrder: number;
+  options: Option[];
+}
 interface QuestionViewProps {
   question: Question;
   questionNumber: number;

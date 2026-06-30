@@ -354,7 +354,7 @@ export default function ExamResultPage() {
           </h1>
 
           <div className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-lg ring-1 ring-slate-100 sm:flex-row sm:items-center sm:gap-10 sm:p-8">
-            <ScoreRing scored={result.scoredMarks} total={result.totalMarks} />
+            <ScoreRing scored={result.scoredMarks ?? 0} total={result.totalMarks} />
 
             <div className="grid flex-1 grid-cols-2 gap-3 sm:grid-cols-4">
               <StatCard label="Correct" value={result.correctCount} color="text-emerald-600" bg="bg-emerald-50" />
@@ -367,7 +367,7 @@ export default function ExamResultPage() {
           <div className="mt-4 flex flex-wrap gap-5 text-xs text-slate-500 sm:text-sm">
             <span>⏱ Time taken: <strong className="text-slate-700">{mm}m {ss}s</strong> of {result.durationMinutes}m</span>
             {result.percentile != null && (
-              <span>📊 Percentile: <strong className="text-slate-700">{result.percentile.toFixed(1)}</strong></span>
+              <span>📊 Percentile: <strong className="text-slate-700">  {Number(result.percentile).toFixed(1)}</strong></span>
             )}
             {result.rank != null && result.totalParticipants != null && (
               <span>🏆 Rank: <strong className="text-slate-700">{result.rank}</strong> of {result.totalParticipants}</span>

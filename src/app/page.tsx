@@ -6,6 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import AuthModal, { type AuthMode } from "@/components/authentication/Authmodal";
+import Image from "next/image";
 
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -388,11 +389,14 @@ const openAuthModal = (mode: AuthMode) => {
       <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 shadow-sm">
-              <span className="text-sm font-black text-white">PL</span>
-            </div>
-            <span className="text-base font-extrabold tracking-tight text-slate-900">Prathamik Learn</span>
-          </div>
+        
+  <Image
+                className="dark:hidden"
+                src="/images/logo/logo_1.png"
+                alt="Logo"
+                width={150}
+                height={40}
+              />          </div>
 
           {/* Desktop nav */}
           <div className="hidden items-center gap-7 text-sm font-medium text-slate-500 sm:flex">

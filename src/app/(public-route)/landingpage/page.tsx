@@ -4,6 +4,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -376,10 +377,17 @@ export default function LandingPage() {
       <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 shadow-sm">
+            {/* <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 shadow-sm">
               <span className="text-sm font-black text-white">T</span>
-            </div>
-            <span className="text-base font-extrabold tracking-tight text-slate-900">Prathamik Learn</span>
+            </div> */}
+            {/* <span className="text-base font-extrabold tracking-tight text-slate-900">Prathamik Learn</span> */}
+              <Image
+                            className="dark:hidden"
+                            src="/images/logo/logo_1.png"
+                            alt="Logo"
+                            width={150}
+                            height={40}
+                          />
           </div>
 
           {/* Desktop nav */}
@@ -762,8 +770,13 @@ export default function LandingPage() {
                 <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400">
                   <span className="text-xs font-black text-white">T</span>
                 </div>
-                <span className="text-sm font-extrabold text-slate-900">Prathamik learn</span>
-              </div>
+  <Image
+                className="dark:hidden"
+                src="/images/logo/logo_1.png"
+                alt="Logo"
+                width={150}
+                height={40}
+              />              </div>
               <p className="max-w-xs text-xs leading-relaxed text-slate-400">
                 Real mock tests for real exams. Built for India's competitive exam aspirants.
               </p>

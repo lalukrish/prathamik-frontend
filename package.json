@@ -41,6 +41,7 @@
     "react-dropzone": "^14.3.8",
     "react-redux": "^9.2.0",
     "react-text-to-speech": "^5.1.10",
+    "recharts": "^3.9.0",
     "swiper": "^12.1.4",
     "tailwind-merge": "^2.6.0",
     "yup": "^1.7.1"

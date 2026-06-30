@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import StatsCards from "./Statscards";
-import { DashboardStats } from "./Types";
+import { DashboardStats } from "./types";
 
 interface Props {
   stats: DashboardStats;
