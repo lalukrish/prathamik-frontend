@@ -47,7 +47,7 @@ export default function UserDropdown() {
         </div>
 
         <span className="block mr-1 font-medium text-theme-sm text-white ">
-          {/* {localStorage.getItem("name")} */}
+          {/* {localStorage.getItem("name")}s */}
           {user?.name ?? ""}
         </span>
 
