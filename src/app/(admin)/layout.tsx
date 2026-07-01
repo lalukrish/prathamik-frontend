@@ -67,7 +67,6 @@ export default function AdminLayout({
       <Backdrop />
       <AppSidebar />
 
-      {/* content panel — rounded top-left corner sits right under the dark header */}
       <div className="lg:ml-[260px]">
         <div className="min-h-[calc(100vh-40px)] rounded-r-[10px] bg-gray-50 dark:bg-gray-900 pb-20 lg:pb-0">
           <ReduxProvider>
