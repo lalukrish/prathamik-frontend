@@ -100,7 +100,7 @@ export default function DashboardPage() {
 
       {/* Bottom — subject chart + attended table */}
       {stats && (
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_380px]">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr]">
           <AttendedTestsTable tests={attendedTests} />
           {/* <SubjectPerformanceChart data={stats.subjectPerformance} /> */}
         </div>

@@ -40,13 +40,13 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle gap-2"
       >
-        <div className="w-11 h-11 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800 flex items-center justify-center bg-blue-100 dark:bg-blue-900">
+        <div className="w-8 h-8 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800 flex items-center justify-center bg-blue-100 dark:bg-blue-900">
           <span className="text-xl font-bold text-blue-600 dark:text-blue-300">
             {user?.name?.charAt(0).toUpperCase() ?? ""}
           </span>
         </div>
 
-        <span className="block mr-1 font-medium text-theme-sm ">
+        <span className="block mr-1 font-medium text-theme-sm text-white ">
           {/* {localStorage.getItem("name")} */}
           {user?.name ?? ""}
         </span>

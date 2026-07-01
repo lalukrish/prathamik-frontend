@@ -55,12 +55,12 @@ export default function StatsCards({ stats }: Props) {
       {cards.map((card) => (
         <div
           key={card.label}
-          className={`rounded-2xl p-3.5 ${card.bg}`}
+          className={`rounded-2xl p-5.5 ${card.bg}`}
         >
           <p className={`text-xl font-extrabold ${card.color}`}>
             {card.value}{card.suffix}
           </p>
-          <p className="mt-0.5 text-[11px] text-slate-500 leading-tight">{card.label}</p>
+          <p className="mt-0.5 text-[13px] text-slate-500 leading-tight">{card.label}</p>
         </div>
       ))}
     </div>
